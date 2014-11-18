@@ -23647,14 +23647,20 @@ module.exports=require('nakDgH');
 
 'use strict';
 var React = require('react');
+var Video = require('./video.js');
+var VideoList = require('./video-list.js');
 
 var Shell = React.createClass({displayName: 'Shell',
     render: function() {
         return (
         	/*jshint ignore:start */
-
-            React.createElement("div", null, 
-            	React.createElement("h2", null, "Hello, World")
+            React.createElement("div", {className: "row"}, 
+                React.createElement("div", {className: "col-md-8 main"}, 
+                    React.createElement(Video, null)
+                ), 
+                React.createElement("div", {className: "col-md-4 sidebar"}, 
+                    React.createElement(VideoList, null)
+                )
             )
             /*jshint ignore:end */
         );
@@ -23663,7 +23669,45 @@ var Shell = React.createClass({displayName: 'Shell',
 
 module.exports = Shell;
 
-},{"react":"nakDgH"}],196:[function(require,module,exports){
+},{"./video-list.js":196,"./video.js":197,"react":"nakDgH"}],196:[function(require,module,exports){
+/** @jsx React.DOM */
+
+'use strict';
+var React = require('react');
+
+var VideoList = React.createClass({displayName: 'VideoList',
+    render: function(){
+        return(
+            /*jshint ignore:start */
+            React.createElement("ul", null, 
+                React.createElement("li", null, "Hola")
+            )
+            /*jshint ignore:end */
+            );
+    }
+});
+
+module.exports = VideoList;
+
+},{"react":"nakDgH"}],197:[function(require,module,exports){
+/** @jsx React.DOM */
+
+'use strict';
+var React = require('react');
+
+var Video = React.createClass({displayName: 'Video',
+    render: function(){
+        return(
+            /*jshint ignore:start */
+            React.createElement("video", {src: ""})
+            /*jshint ignore:end */
+            );
+    }
+});
+
+module.exports = Video;
+
+},{"react":"nakDgH"}],198:[function(require,module,exports){
 /** @jsx React.DOM */
 
 'use strict';
@@ -23684,4 +23728,4 @@ React.render(
     document.getElementById('app')
 );
 
-},{"./components/shell.js":195,"react":"nakDgH","react-router":15}]},{},[196])
+},{"./components/shell.js":195,"react":"nakDgH","react-router":15}]},{},[198])
