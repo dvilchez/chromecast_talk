@@ -23721,7 +23721,7 @@ var Video = React.createClass({displayName: 'Video',
             muteButton.innerHTML = 'Mute';
         }
     },
-
+    
     componentDidMount: function(){
          var video = this.refs.video.getDOMNode();
          var seekBar = this.refs.seekBar.getDOMNode();
@@ -23756,12 +23756,14 @@ var Video = React.createClass({displayName: 'Video',
         return(
             /*jshint ignore:start */
             React.createElement("div", null, 
-                React.createElement("video", {ref: "video", src: "http://download.ted.com/talks/AlGore_2006-950k.mp4?apikey=659af6215c9ed500371b8bb3681db69d1d5a88fc", onLoadedData: this.init}), 
+                React.createElement("video", {ref: "video", src: "http://download.ted.com/talks/AlGore_2006-950k.mp4?apikey=659af6215c9ed500371b8bb3681db69d1d5a88fc", onLoadedData: this.init}
+                ), 
                 React.createElement("div", null, 
                     React.createElement("button", {ref: "play", type: "button", onClick: this.play}, "Play"), 
                     React.createElement("input", {ref: "seekBar", type: "range", min: "0", max: "100"}), 
                     React.createElement("button", {ref: "mute", type: "button", onClick: this.mute}, "Mute"), 
-                    React.createElement("input", {ref: "volumeBar", type: "range", min: "0", max: "1", step: "0.1", onClick: this.volumeUp})
+                    React.createElement("input", {ref: "volumeBar", type: "range", min: "0", max: "1", step: "0.1"}), 
+                    React.createElement("button", {type: "button", onClick: "{this.cc}"}, "CC")
                   )
             )
             /*jshint ignore:end */
