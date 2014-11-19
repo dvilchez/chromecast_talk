@@ -17,3 +17,5 @@ React.render(
     /*jshint ignore:end */
     document.getElementById('app')
 );
+
+window.React = React;
