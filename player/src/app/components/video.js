@@ -71,7 +71,6 @@ var Video = React.createClass({
                     <input ref='seekBar' type="range" min='0' max='100'/>
                     <button ref='mute' type="button" onClick={this.mute}>Mute</button>
                     <input ref='volumeBar' type="range" min="0" max="1" step="0.1"/>
-                    <button type="button" onClick="{this.cc}">CC</button>
                   </div>
             </div>
             /*jshint ignore:end */

@@ -23759,8 +23759,7 @@ var Video = React.createClass({displayName: 'Video',
                     React.createElement("button", {ref: "play", type: "button", onClick: this.play}, "Play"), 
                     React.createElement("input", {ref: "seekBar", type: "range", min: "0", max: "100"}), 
                     React.createElement("button", {ref: "mute", type: "button", onClick: this.mute}, "Mute"), 
-                    React.createElement("input", {ref: "volumeBar", type: "range", min: "0", max: "1", step: "0.1"}), 
-                    React.createElement("button", {type: "button", onClick: "{this.cc}"}, "CC")
+                    React.createElement("input", {ref: "volumeBar", type: "range", min: "0", max: "1", step: "0.1"})
                   )
             )
             /*jshint ignore:end */
