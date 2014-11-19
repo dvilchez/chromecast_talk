@@ -10,11 +10,8 @@ var Shell = React.createClass({
         return (
         	/*jshint ignore:start */
             <div className='row'>
-                <div className='col-md-8 main' >
+                <div >
                     <Video/>
-                </div>
-                <div className='col-md-4 sidebar'>
-                    <VideoList />
                 </div>
             </div>
             /*jshint ignore:end */

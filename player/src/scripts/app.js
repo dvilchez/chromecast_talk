@@ -23655,11 +23655,8 @@ var Shell = React.createClass({displayName: 'Shell',
         return (
         	/*jshint ignore:start */
             React.createElement("div", {className: "row"}, 
-                React.createElement("div", {className: "col-md-8 main"}, 
+                React.createElement("div", null, 
                     React.createElement(Video, null)
-                ), 
-                React.createElement("div", {className: "col-md-4 sidebar"}, 
-                    React.createElement(VideoList, null)
                 )
             )
             /*jshint ignore:end */
