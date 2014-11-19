@@ -4,32 +4,12 @@
 var React = require('react');
 
 var Video = React.createClass({
-    play: function(){
-        var video = this.refs.video.getDOMNode();
-        var play = this.refs.play.getDOMNode();
-
-        if(video.paused){
-            video.play();
-            play.innerText = 'Pause';
-        }else{
-            video.pause();
-            play.innerText = 'Play';
-        }
+    getInitialState: function(){
+        return {
+            session: undefined
+        };
     },
 
-    mute: function(){
-        var video = this.refs.video.getDOMNode();
-        var muteButton = this.refs.mute.getDOMNode();
-        
-        if (video.muted === false) {
-            video.muted = true;
-            muteButton.innerHTML = 'Unmute';
-        } else {
-            video.muted = false;
-            muteButton.innerHTML = 'Mute';
-        }
-    },
-    
     componentDidMount: function(){
          var video = this.refs.video.getDOMNode();
          var seekBar = this.refs.seekBar.getDOMNode();
@@ -60,6 +40,37 @@ var Video = React.createClass({
          });
     },
 
+    play: function(){
+        var video = this.refs.video.getDOMNode();
+        var play = this.refs.play.getDOMNode();
+
+        if(video.paused){
+            video.play();
+            play.innerText = 'Pause';
+        }else{
+            video.pause();
+            play.innerText = 'Play';
+        }
+    },
+
+    mute: function(){
+        var video = this.refs.video.getDOMNode();
+        var muteButton = this.refs.mute.getDOMNode();
+        
+        if (video.muted === false) {
+            video.muted = true;
+            muteButton.innerHTML = 'Unmute';
+        } else {
+            video.muted = false;
+            muteButton.innerHTML = 'Mute';
+        }
+    },
+    
+
+    cast: function(){
+        chrome.cast.requestSession(function(e){this.setState({session: e});}.bind(this), function(){ console.log('cast error');});
+    },
+
     render: function(){
         return(
             /*jshint ignore:start */
@@ -71,6 +82,7 @@ var Video = React.createClass({
                     <input ref='seekBar' type="range" min='0' max='100'/>
                     <button ref='mute' type="button" onClick={this.mute}>Mute</button>
                     <input ref='volumeBar' type="range" min="0" max="1" step="0.1"/>
+                    <button onClick={this.cast}>Cast</button>
                   </div>
             </div>
             /*jshint ignore:end */

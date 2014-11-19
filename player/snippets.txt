@@ -15,3 +15,5 @@ window.__onGCastApiAvailable = function(loaded, errorInfo){
 if( e === chrome.cast.ReceiverAvailability.AVAILABLE) {
   }
 
+chrome.cast.requestSession(function(e){this.setState({session: e});}.bind(this), function(){ console.log('cast error');});
+
