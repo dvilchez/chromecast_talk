@@ -6,7 +6,8 @@ var React = require('react');
 var Video = React.createClass({
     getInitialState: function(){
         return {
-            session: undefined
+            session: undefined,
+            current_media: undefined
         };
     },
 
@@ -68,14 +69,35 @@ var Video = React.createClass({
     
 
     cast: function(){
-        chrome.cast.requestSession(function(e){this.setState({session: e});}.bind(this), function(){ console.log('cast error');});
+        var video = this.refs.video.getDOMNode();
+        
+        chrome.cast.requestSession(function(e){
+            this.setState({session: e});
+            $.ajax({
+                type: "HEAD",
+                url: video.src,
+                context:this,
+                success: function(message,text,response){
+                    var mediaInfo = new chrome.cast.media.MediaInfo(video.src, response.getResponseHeader('Content-Type'));
+                    var request = new chrome.cast.media.LoadRequest(mediaInfo);
+
+                    this.state.session.loadMedia(request, function(how, media){
+                        this.setState({current_media: media});
+                    }.bind(this, 'loadMedia'), this.logError);
+                }
+            }); 
+        }.bind(this), this.logError);
+    },
+
+    logError: function(error){
+        console.log(error);
     },
 
     render: function(){
         return(
             /*jshint ignore:start */
             <div>
-                <video ref='video' src="http://download.ted.com/talks/AlGore_2006-950k.mp4?apikey=659af6215c9ed500371b8bb3681db69d1d5a88fc" onLoadedData={this.init}>
+                <video ref='video' src="https://e4e541a9ce7a5c91babd53801e992ad75aac9c21.googledrive.com/host/0B2j1eTLysQsUY2FWYm16Y1BNb0U/colores_es.mp4">
                 </video>
                 <div>
                     <button ref='play' type="button" onClick={this.play}>Play</button>

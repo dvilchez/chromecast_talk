@@ -17,3 +17,21 @@ if( e === chrome.cast.ReceiverAvailability.AVAILABLE) {
 
 chrome.cast.requestSession(function(e){this.setState({session: e});}.bind(this), function(){ console.log('cast error');});
 
+var mediaInfo = new chrome.cast.media.MediaInfo(currentMediaURL);
+var request = new chrome.cast.media.LoadRequest(mediaInfo);
+session.loadMedia(request,
+   onMediaDiscovered.bind(this, 'loadMedia'),
+   onMediaError);
+
+function onMediaDiscovered(how, media) {
+   currentMedia = media;
+}
+
+ $.ajax({
+        type: "HEAD",
+        async: true,
+        url: imageTemp[i],
+        success: function(message,text,response){
+            imageData.push([imageTemp[i], response.getResponseHeader('Content-Length')]);
+        }
+    });
