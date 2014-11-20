@@ -23651,12 +23651,45 @@ var Video = require('./video.js');
 var VideoList = require('./video-list.js');
 
 var Shell = React.createClass({displayName: 'Shell',
+    getInitialState: function(){
+        return {
+            session: undefined,
+            currentMedia: undefined
+        };
+    },
+
+    componentDidMount: function(){
+        window.__onGCastApiAvailable = function(loaded, errorInfo){
+            if(loaded){
+                var sessionRequest = new chrome.cast.SessionRequest(chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID);
+                var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
+                    this.sessionListener,
+                    this.receiverListener);
+                chrome.cast.initialize(apiConfig, function(){ console.log('init success'); }, function(){ console.log('init error'); }) ;
+            }else{
+                console.log(errorInfo);
+            }
+        }.bind(this);
+    },
+
+    sessionListener: function (e){
+        this.setState({session: e});
+        if(e.media.length!=0)
+           this.setState({currentMedia: e.media[0]});
+    },
+
+    receiverListener: function (e){
+        if( e === chrome.cast.ReceiverAvailability.AVAILABLE) {
+    
+        }
+    },
+
     render: function() {
         return (
         	/*jshint ignore:start */
             React.createElement("div", {className: "row"}, 
                 React.createElement("div", null, 
-                    React.createElement(Video, null)
+                    React.createElement(Video, {session: this.state.session, currentMedia: this.state.currentMedia})
                 )
             )
             /*jshint ignore:end */
@@ -23695,10 +23728,17 @@ var React = require('react');
 var Video = React.createClass({displayName: 'Video',
     getInitialState: function(){
         return {
-            videoSrc: "https://e4e541a9ce7a5c91babd53801e992ad75aac9c21.googledrive.com/host/0B2j1eTLysQsUY2FWYm16Y1BNb0U/colores_es.mp4",
+            videoSrc: "https://dauulq.dm2302.livefilestore.com/y2mI46_Y4aklhX8UtS3Xq6KojLZyEYq2Zt7aPzUf5VXRLk3T4nSktRIP0aa0hLZjM1GZqKaDTB_J3--WHfUyzZfAGtFUlr1UMnjB_ED2uJ97Tg/colores_es.mp4",
             session: undefined,
             currentMedia: undefined
         };
+    },
+    
+    componentWillReceiveProps: function(nextProps){
+        if(nextProps.session)
+            this.setState({session: nextProps.session});
+        if(nextProps.currentMedia)
+            this.setState({currentMedia: nextProps.currentMedia});
     },
 
     componentDidMount: function(){
@@ -23757,14 +23797,14 @@ var Video = React.createClass({displayName: 'Video',
     },
 
     isPaused: function(){
-        if(this.state.session && this.state.currentMedia)
+        if(this.state.session && this.state.session.status === 'connected' && this.state.currentMedia)
             return this.state.currentMedia.playerState !== 'PLAYING';
         
         return this.refs.video.getDOMNode().paused;
     },
     
     playVideo: function(){
-        if(this.state.session){
+        if(this.state.session && this.state.session.status === 'connected'){
             if(this.state.currentMedia){
                 this.state.currentMedia.play(null,null,this.logError);
             }else{
@@ -23776,8 +23816,8 @@ var Video = React.createClass({displayName: 'Video',
     },
 
     pauseVideo: function(){
-        if(this.state.session){
-            if(this.state.currentMedia){
+        if(this.state.session && this.state.session.status === 'connected'){
+            if(this.state.currentMedia ){
                 this.state.currentMedia.pause(null,null,this.logError);
             }else{
                 this.loadMedia();
@@ -23797,23 +23837,16 @@ var Video = React.createClass({displayName: 'Video',
     
     loadMedia: function(){
         var video = this.refs.video.getDOMNode();
-        $.ajax({
-            type: "HEAD",
-            url: this.state.videoSrc,
-            context:this,
-            success: function(message,text,response){
-                var mediaInfo = new chrome.cast.media.MediaInfo(this.state.videoSrc, response.getResponseHeader('Content-Type'));
-                var request = new chrome.cast.media.LoadRequest(mediaInfo);
+        var mediaInfo = new chrome.cast.media.MediaInfo(this.state.videoSrc, 'mp4');
+        var request = new chrome.cast.media.LoadRequest(mediaInfo);
 
-                this.state.session.loadMedia(request, function(how, media){
-                    media.addUpdateListener(this.onMediaStatusUpdate);
-                    this.setState({currentMedia: media});
-                    video.pause();
-                    video.currentTime = 0;
-                    this.refs.play.getDOMNode().innerText = 'Pause';
-                }.bind(this, 'loadMedia'), this.logError);
-            }
-        }); 
+        this.state.session.loadMedia(request, function(how, media){
+            media.addUpdateListener(this.onMediaStatusUpdate);
+            this.setState({currentMedia: media});
+            video.pause();
+            video.currentTime = 0;
+            this.refs.play.getDOMNode().innerText = 'Pause';
+        }.bind(this, 'loadMedia'), this.logError);
     },
 
     onMediaStatusUpdate: function(isAlive){
@@ -23870,26 +23903,5 @@ React.render(
 );
 
 window.React = React;
-window.__onGCastApiAvailable = function(loaded, errorInfo){
-    if(loaded){
-        var sessionRequest = new chrome.cast.SessionRequest(chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID);
-        var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
-            sessionListener,
-            receiverListener);
-        chrome.cast.initialize(apiConfig, function(){ console.log('init success'); }, function(){ console.log('init error'); }) ;
-    }else{
-        console.log(errorInfo);
-    }
-};
-
-function sessionListener(e){
-
-};
-
-function receiverListener(e){
-    if( e === chrome.cast.ReceiverAvailability.AVAILABLE) {
-    
-    }
-};
 
 },{"./components/shell.js":195,"react":"nakDgH","react-router":15}]},{},[198])

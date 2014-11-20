@@ -6,10 +6,17 @@ var React = require('react');
 var Video = React.createClass({
     getInitialState: function(){
         return {
-            videoSrc: "https://e4e541a9ce7a5c91babd53801e992ad75aac9c21.googledrive.com/host/0B2j1eTLysQsUY2FWYm16Y1BNb0U/colores_es.mp4",
+            videoSrc: "https://dauulq.dm2302.livefilestore.com/y2mI46_Y4aklhX8UtS3Xq6KojLZyEYq2Zt7aPzUf5VXRLk3T4nSktRIP0aa0hLZjM1GZqKaDTB_J3--WHfUyzZfAGtFUlr1UMnjB_ED2uJ97Tg/colores_es.mp4",
             session: undefined,
             currentMedia: undefined
         };
+    },
+    
+    componentWillReceiveProps: function(nextProps){
+        if(nextProps.session)
+            this.setState({session: nextProps.session});
+        if(nextProps.currentMedia)
+            this.setState({currentMedia: nextProps.currentMedia});
     },
 
     componentDidMount: function(){
@@ -68,14 +75,14 @@ var Video = React.createClass({
     },
 
     isPaused: function(){
-        if(this.state.session && this.state.currentMedia)
+        if(this.state.session && this.state.session.status === 'connected' && this.state.currentMedia)
             return this.state.currentMedia.playerState !== 'PLAYING';
         
         return this.refs.video.getDOMNode().paused;
     },
     
     playVideo: function(){
-        if(this.state.session){
+        if(this.state.session && this.state.session.status === 'connected'){
             if(this.state.currentMedia){
                 this.state.currentMedia.play(null,null,this.logError);
             }else{
@@ -87,8 +94,8 @@ var Video = React.createClass({
     },
 
     pauseVideo: function(){
-        if(this.state.session){
-            if(this.state.currentMedia){
+        if(this.state.session && this.state.session.status === 'connected'){
+            if(this.state.currentMedia ){
                 this.state.currentMedia.pause(null,null,this.logError);
             }else{
                 this.loadMedia();
@@ -108,23 +115,16 @@ var Video = React.createClass({
     
     loadMedia: function(){
         var video = this.refs.video.getDOMNode();
-        $.ajax({
-            type: "HEAD",
-            url: this.state.videoSrc,
-            context:this,
-            success: function(message,text,response){
-                var mediaInfo = new chrome.cast.media.MediaInfo(this.state.videoSrc, response.getResponseHeader('Content-Type'));
-                var request = new chrome.cast.media.LoadRequest(mediaInfo);
+        var mediaInfo = new chrome.cast.media.MediaInfo(this.state.videoSrc, 'mp4');
+        var request = new chrome.cast.media.LoadRequest(mediaInfo);
 
-                this.state.session.loadMedia(request, function(how, media){
-                    media.addUpdateListener(this.onMediaStatusUpdate);
-                    this.setState({currentMedia: media});
-                    video.pause();
-                    video.currentTime = 0;
-                    this.refs.play.getDOMNode().innerText = 'Pause';
-                }.bind(this, 'loadMedia'), this.logError);
-            }
-        }); 
+        this.state.session.loadMedia(request, function(how, media){
+            media.addUpdateListener(this.onMediaStatusUpdate);
+            this.setState({currentMedia: media});
+            video.pause();
+            video.currentTime = 0;
+            this.refs.play.getDOMNode().innerText = 'Pause';
+        }.bind(this, 'loadMedia'), this.logError);
     },
 
     onMediaStatusUpdate: function(isAlive){
