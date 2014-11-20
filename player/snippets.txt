@@ -35,3 +35,20 @@ function onMediaDiscovered(how, media) {
             imageData.push([imageTemp[i], response.getResponseHeader('Content-Length')]);
         }
     });
+
+ https://dl.dropboxusercontent.com/u/6457942/comunicado%20colores/colores_lanzamiento.jpg
+
+https://dl.dropboxusercontent.com/u/6457942/comunicado%20colores/colores_lanzamiento.jpg
+
+function onMediaDiscovered(how, media) {
+  media.addUpdateListener(onMediaStatusUpdate);
+}
+
+onMediaStatusUpdate: function(status){
+        if(!status){
+             this.setState({currentMedia: undefined});
+             this.refs.play.getDOMNode().innerText = 'Play';
+             this.setState({paused: true});
+        }
+    },
+
