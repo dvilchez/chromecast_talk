@@ -23828,10 +23828,13 @@ var Video = React.createClass({displayName: 'Video',
     },
 
     cast: function(){
-        if(!this.state.session){
+        if(!this.state.session || this.state.session.status !== 'connected'){
             chrome.cast.requestSession(function(e){
                 this.setState({session: e});
+                this.loadMedia();
             }.bind(this), this.logError);
+        }else{
+            this.state.session.stop(null, this.logError);
         }
     },
     

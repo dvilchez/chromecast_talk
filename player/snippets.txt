@@ -57,3 +57,7 @@ function sessionListener(e) {
     onMediaDiscovered('onRequestSessionSuccess', session.media[0]);
   }
 }
+
+function stopApp() {
+  session.stop(onSuccess, onError);
+}
