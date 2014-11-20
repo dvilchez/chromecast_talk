@@ -70,3 +70,22 @@ https://cast.google.com/publish/#/overview
 
 window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
     window.castReceiverManager.start();
+
+http://RECEIVER-IP-ADDRESS:9222
+cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+debugger;
+window.location.reload(true);
+
+
+var customMessageBus = castReceiverManager.getCastMessageBus('urn:x-cast:super.awesome.example');
+customMessageBus.onMessage = function(event) {
+   // Handle message
+}
+
+eval('('+this.data+')')
+
+ function sendMessage(dir, acc){
+            data[dir] = acc;
+            session.sendMessage('urn:x-cast:com.xuaps.retrogame', data, log, log);
+        }
+

@@ -5,6 +5,15 @@ var main = {
       game.load.image('paddle', 'assets/paddle.png');
       game.load.image('brick', 'assets/brick.png');
       game.load.image('ball', 'assets/ball.png');
+
+        window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+        var customMessageBus = castReceiverManager.getCastMessageBus('urn:x-cast:com.xuaps.retrogame');
+        customMessageBus.onMessage = function(event) {
+            this.data = eval('('+event.data+')');
+        }.bind(this);
+        window.castReceiverManager.start();
+
+
     },
 
     create: function() { 
@@ -12,8 +21,11 @@ var main = {
       game.physics.startSystem(Phaser.Physics.ARCADE);
 
       // Create a variable to handle the arrow keys
-      this.cursor = game.input.keyboard.createCursorKeys();
-
+//      this.cursor = game.input.keyboard.createCursorKeys();
+      this.data = {
+        left: false,
+        right: false
+      }
       // Create the paddle at the bottom of the screen
       this.paddle = game.add.sprite(200, 400, 'paddle');
 
@@ -56,11 +68,11 @@ var main = {
 
     update: function() {
       // If the right arrow is pressed, move the paddle to the right
-      if (this.cursor.right.isDown) 
+      if (this.data.right) 
         this.paddle.body.velocity.x = 350;
 
       // If the left arrow if pressed, move left
-      else if (this.cursor.left.isDown) 
+      else if (this.data.left) 
         this.paddle.body.velocity.x = -350;
 
       // If no arrow is pressed, stop moving
@@ -85,5 +97,3 @@ var game = new Phaser.Game(400, 450, Phaser.AUTO, 'gameDiv');
 game.state.add('main', main);
 game.state.start('main');
 
-window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-window.castReceiverManager.start();

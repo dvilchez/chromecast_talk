@@ -6,6 +6,10 @@
     <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
     <script>    
         var session;
+        var data = {
+            left: false,
+            right: false
+        }
 
         window.__onGCastApiAvailable = function(loaded, errorInfo){
             if(loaded){
@@ -33,9 +37,20 @@
                     session = e;
                     }, function(){ console.log('cast error');});
         }  
+
+        function sendMessage(dir, acc){
+            data[dir] = acc;
+            session.sendMessage('urn:x-cast:com.xuaps.retrogame', data, log, log);
+        }
+
+        function log(e){
+            console.log(e);
+        }
     </script>
 </head>
 <body>
     <button onClick='cast()'>start</button>
+    <button onMouseDown="sendMessage('left', true)" onMouseUp="sendMessage('left', false)"><=</button>
+    <button onMouseDown="sendMessage('right', true)" onMouseUp="sendMessage('right', false)">=></button>
 </body>
 </html>
