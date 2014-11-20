@@ -84,3 +84,6 @@ var main = {
 var game = new Phaser.Game(400, 450, Phaser.AUTO, 'gameDiv');
 game.state.add('main', main);
 game.state.start('main');
+
+window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+window.castReceiverManager.start();

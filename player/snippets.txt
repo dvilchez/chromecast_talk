@@ -61,3 +61,12 @@ function sessionListener(e) {
 function stopApp() {
   session.stop(onSuccess, onError);
 }
+
+==============================
+
+//www.gstatic.com/cast/sdk/libs/receiver/2.0.0/cast_receiver.js
+
+https://cast.google.com/publish/#/overview
+
+window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
+    window.castReceiverManager.start();
