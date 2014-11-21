@@ -35,8 +35,13 @@
             chrome.cast.requestSession(
                 function(e){
                     session = e;
+                    session.addMessageListener('urn:x-cast:com.xuaps.retrogame', showMessage);
                     }, function(){ console.log('cast error');});
         }  
+
+        function showMessage(namespace, message){
+            document.getElementById('messages').value=message;
+        }
 
         function sendMessage(dir, acc){
             data[dir] = acc;
@@ -50,6 +55,8 @@
 </head>
 <body>
     <button onClick='cast()'>start</button>
+    <input type="text" id="messages"/>
+    
     <button onMouseDown="sendMessage('left', true)" onMouseUp="sendMessage('left', false)"><=</button>
     <button onMouseDown="sendMessage('right', true)" onMouseUp="sendMessage('right', false)">=></button>
 </body>

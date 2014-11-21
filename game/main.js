@@ -7,8 +7,8 @@ var main = {
       game.load.image('ball', 'assets/ball.png');
 
         window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-        var customMessageBus = castReceiverManager.getCastMessageBus('urn:x-cast:com.xuaps.retrogame');
-        customMessageBus.onMessage = function(event) {
+        this.customMessageBus = castReceiverManager.getCastMessageBus('urn:x-cast:com.xuaps.retrogame');
+        this.customMessageBus.onMessage = function(event) {
             this.data = eval('('+event.data+')');
         }.bind(this);
         window.castReceiverManager.start();
@@ -60,7 +60,7 @@ var main = {
       this.ball.body.bounce.x = 1; 
       this.ball.body.bounce.y = 1;
 
-      game.scale.fullScreenScaleMode = Phaser.ScaleManager.SHOW_ALL;
+      game.scale.fullScreenScaleMode = Phaser.ScaleManager.EXACT_FIT;
       game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; 
       game.scale.refresh();
       game.scale.startFullScreen();
@@ -80,15 +80,21 @@ var main = {
         this.paddle.body.velocity.x = 0;
 
       // Make the paddle and the ball collide
-      game.physics.arcade.collide(this.paddle, this.ball);
+      game.physics.arcade.collide(this.paddle, this.ball, this.pong, null, this);
 
       // Call the 'hit' function when the ball hit a brick
       game.physics.arcade.collide(this.ball, this.bricks, this.hit, null, this);  
     },
 
+    pong: function(paddle, ball){
+        this.customMessageBus.broadcast('');
+    },
+
     hit: function(ball, brick) {
         // When the ball hits a brick, kill the brick
         brick.kill();
+        this.customMessageBus.broadcast('GREAT!');
+
     }
 };
 

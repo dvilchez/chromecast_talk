@@ -36,7 +36,7 @@ function onMediaDiscovered(how, media) {
         }
     });
 
- https://dl.dropboxusercontent.com/u/6457942/comunicado%20colores/colores_lanzamiento.jpg
+bit.ly/1F7o1XK
 
 https://dl.dropboxusercontent.com/u/6457942/comunicado%20colores/colores_lanzamiento.jpg
 
@@ -88,4 +88,25 @@ eval('('+this.data+')')
             data[dir] = acc;
             session.sendMessage('urn:x-cast:com.xuaps.retrogame', data, log, log);
         }
+window.castReceiverManager.onSenderDisconnected = function(event) {
+  if(window.castReceiverManager.getSenders().length == 0 &&
+    event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER) {
+      window.close();
+  }
+}
 
+
+        this.customMessageBus.broadcast('GREAT!');
+
+                    session.addMessageListener('urn:x-cast:com.xuaps.retrogame', showMessage);
+        function showMessage(namespace, message){
+            document.getElementById('messages').value=message;
+        }
+
+cordova create gamecast
+
+cordova platform add android
+
+cordova run
+
+cordova plugin add https://github.com/GetVideostream/cordova-chromecast.git
