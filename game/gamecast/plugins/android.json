@@ -1,0 +1,37 @@
+{
+    "prepare_queue": {
+        "installed": [],
+        "uninstalled": []
+    },
+    "config_munge": {
+        "files": {
+            "res/xml/config.xml": {
+                "parents": {
+                    "/widget": [
+                        {
+                            "xml": "<feature name=\"Chromecast\"><param name=\"android-package\" value=\"acidhax.cordova.chromecast.Chromecast\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": []
+                }
+            },
+            "AndroidManifest.xml": {
+                "parents": {
+                    "/*": [],
+                    "/manifest/application": []
+                }
+            }
+        }
+    },
+    "installed_plugins": {
+        "acidhax.cordova.chromecast": {
+            "PACKAGE_NAME": "io.cordova.hellocordova"
+        }
+    },
+    "dependent_plugins": {}
+}

@@ -110,3 +110,9 @@ cordova platform add android
 cordova run
 
 cordova plugin add https://github.com/GetVideostream/cordova-chromecast.git
+
+document.addEventListener('deviceready', onDeviceReady, false);
+
+if (!chrome.cast || !chrome.cast.isAvailable) {
+  setTimeout(initializeCastApi, 1000);
+}

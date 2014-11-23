@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script>    
+        var session;
+        var data = {
+            left: false,
+            right: false
+        }
+
+        function onDeviceReady(){
+            if (!chrome.cast || !chrome.cast.isAvailable) {
+              setTimeout(initializeCastApi, 1000);
+            }
+            initializeCastApi();
+        }
+
+        function initializeCastApi(){
+
+                    var sessionRequest = new chrome.cast.SessionRequest('D56FAE17');
+                    var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
+                        sessionListener,
+                        receiverListener);
+                    chrome.cast.initialize(apiConfig, function(){ console.log('init success'); }, function(){ console.log('init error'); }) ;
+        }
+
+        function sessionListener(e){
+
+        }
+
+        function receiverListener(e){
+
+        }
+
+        function cast(){
+            chrome.cast.requestSession(
+                function(e){
+                    session = e;
+                    session.addMessageListener('urn:x-cast:com.xuaps.retrogame', showMessage);
+                    }, function(){ console.log('cast error');});
+        }  
+
+        function showMessage(namespace, message){
+            document.getElementById('messages').value=message;
+        }
+
+        function sendMessage(dir, acc){
+            data[dir] = acc;
+            session.sendMessage('urn:x-cast:com.xuaps.retrogame', data, log, log);
+        }
+
+        function log(e){
+            console.log(e);
+        }
+    </script>
+</head>
+<body onload="document.addEventListener('deviceready', onDeviceReady, false);">
+    <button onClick='cast()'>start</button>
+    <input type="text" id="messages"/>
+    
+    <button onMouseDown="sendMessage('left', true)" onMouseUp="sendMessage('left', false)"><=</button>
+    <button onMouseDown="sendMessage('right', true)" onMouseUp="sendMessage('right', false)">=></button>
+</body>
+</html>
