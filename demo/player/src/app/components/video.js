@@ -6,7 +6,7 @@ var React = require('react');
 var Video = React.createClass({
     getInitialState: function(){
         return {
-            videoSrc: "https://dauulq.dm2302.livefilestore.com/y2mI46_Y4aklhX8UtS3Xq6KojLZyEYq2Zt7aPzUf5VXRLk3T4nSktRIP0aa0hLZjM1GZqKaDTB_J3--WHfUyzZfAGtFUlr1UMnjB_ED2uJ97Tg/colores_es.mp4",
+            videoSrc: "http://afinma.com/colores_es.mp4",
             session: undefined,
             currentMedia: undefined
         };
@@ -144,16 +144,20 @@ var Video = React.createClass({
     render: function(){
         return(
             /*jshint ignore:start */
-            <div>
-                <video ref='video' width='640px' src={this.state.videoSrc}>
+            <div className="player">
+                <video ref='video' src={this.state.videoSrc}>
                 </video>
-                <div>
-                    <button ref='play' type="button" onClick={this.play}>Play</button>
-                    <input ref='seekBar' type="range" min='0' max='100'/>
-                    <button ref='mute' type="button" onClick={this.mute}>Mute</button>
-                    <input ref='volumeBar' type="range" min="0" max="1" step="0.1"/>
-                    <button onClick={this.cast}>Cast</button>
-                  </div>
+                <div className="player-tools">
+                    <div className="player-row">
+                        <button ref='play' type="button" className="btn btn-default" onClick={this.play}>Play</button>
+                        <input ref='seekBar' type="range" min='0' max='100'/>
+                    </div>
+                    <div className="player-row">
+                        <button ref='mute' type="button" className="btn btn-default" onClick={this.mute}>Mute</button>
+                        <input ref='volumeBar' type="range" min="0" max="1" step="0.1"/>
+                    </div>
+                    <button className="btn btn-warning" onClick={this.cast}>Cast</button>
+                </div>
             </div>
             /*jshint ignore:end */
             );

@@ -23728,7 +23728,7 @@ var React = require('react');
 var Video = React.createClass({displayName: 'Video',
     getInitialState: function(){
         return {
-            videoSrc: "https://dauulq.dm2302.livefilestore.com/y2mI46_Y4aklhX8UtS3Xq6KojLZyEYq2Zt7aPzUf5VXRLk3T4nSktRIP0aa0hLZjM1GZqKaDTB_J3--WHfUyzZfAGtFUlr1UMnjB_ED2uJ97Tg/colores_es.mp4",
+            videoSrc: "http://afinma.com/colores_es.mp4",
             session: undefined,
             currentMedia: undefined
         };
@@ -23866,16 +23866,20 @@ var Video = React.createClass({displayName: 'Video',
     render: function(){
         return(
             /*jshint ignore:start */
-            React.createElement("div", null, 
-                React.createElement("video", {ref: "video", width: "640px", src: this.state.videoSrc}
+            React.createElement("div", {className: "player"}, 
+                React.createElement("video", {ref: "video", src: this.state.videoSrc}
                 ), 
-                React.createElement("div", null, 
-                    React.createElement("button", {ref: "play", type: "button", onClick: this.play}, "Play"), 
-                    React.createElement("input", {ref: "seekBar", type: "range", min: "0", max: "100"}), 
-                    React.createElement("button", {ref: "mute", type: "button", onClick: this.mute}, "Mute"), 
-                    React.createElement("input", {ref: "volumeBar", type: "range", min: "0", max: "1", step: "0.1"}), 
-                    React.createElement("button", {onClick: this.cast}, "Cast")
-                  )
+                React.createElement("div", {className: "player-tools"}, 
+                    React.createElement("div", {className: "player-row"}, 
+                        React.createElement("button", {ref: "play", type: "button", className: "btn btn-default", onClick: this.play}, "Play"), 
+                        React.createElement("input", {ref: "seekBar", type: "range", min: "0", max: "100"})
+                    ), 
+                    React.createElement("div", {className: "player-row"}, 
+                        React.createElement("button", {ref: "mute", type: "button", className: "btn btn-default", onClick: this.mute}, "Mute"), 
+                        React.createElement("input", {ref: "volumeBar", type: "range", min: "0", max: "1", step: "0.1"})
+                    ), 
+                    React.createElement("button", {className: "btn btn-warning", onClick: this.cast}, "Cast")
+                )
             )
             /*jshint ignore:end */
             );
