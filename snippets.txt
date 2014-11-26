@@ -80,40 +80,26 @@ function stopApp() {
 https://cast.google.com/publish/#/overview
 
 window.castReceiverManager = cast.receiver.CastReceiverManager.getInstance();
-    window.castReceiverManager.start();
-
-http://RECEIVER-IP-ADDRESS:9222
-cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
-debugger;
-window.location.reload(true);
-
+window.castReceiverManager.start();
 
 var customMessageBus = castReceiverManager.getCastMessageBus('urn:x-cast:super.awesome.example');
+
+function sendMessage(dir, acc){
+    data[dir] = acc;
+    session.sendMessage('urn:x-cast:com.xuaps.retrogame', data, log, log);
+}
 customMessageBus.onMessage = function(event) {
    // Handle message
 }
 
-eval('('+this.data+')')
-
- function sendMessage(dir, acc){
-            data[dir] = acc;
-            session.sendMessage('urn:x-cast:com.xuaps.retrogame', data, log, log);
-        }
-window.castReceiverManager.onSenderDisconnected = function(event) {
-  if(window.castReceiverManager.getSenders().length == 0 &&
-    event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER) {
-      window.close();
-  }
+this.customMessageBus.broadcast('GREAT!');
+session.addMessageListener('urn:x-cast:com.xuaps.retrogame', showMessage);
+function showMessage(namespace, message){
+    document.getElementById('messages').value=message;
 }
 
 
-        this.customMessageBus.broadcast('GREAT!');
-
-                    session.addMessageListener('urn:x-cast:com.xuaps.retrogame', showMessage);
-        function showMessage(namespace, message){
-            document.getElementById('messages').value=message;
-        }
-
+=============================================================
 cordova create gamecast
 
 cordova platform add android
@@ -139,3 +125,17 @@ $.ajax({
            imageData.push([imageTemp[i], response.getResponseHeader('Content-Length')]);
        }
    });
+
+
+http://RECEIVER-IP-ADDRESS:9222
+cast.receiver.logger.setLevelValue(cast.receiver.LoggerLevel.DEBUG);
+debugger;
+window.location.reload(true);
+
+window.castReceiverManager.onSenderDisconnected = function(event) {
+  if(window.castReceiverManager.getSenders().length == 0 &&
+    event.reason == cast.receiver.system.DisconnectReason.REQUESTED_BY_SENDER) {
+      window.close();
+  }
+}
+eval('('+this.data+')')
