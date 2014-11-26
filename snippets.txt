@@ -1,21 +1,45 @@
 <script type="text/javascript" src="https://www.gstatic.com/cv/js/sender/v1/cast_sender.js"></script>
 
-window.__onGCastApiAvailable = function(loaded, errorInfo){
-    if(loaded){
-        var sessionRequest = new chrome.cast.SessionRequest(chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID);
-        var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
-            sessionListener,
-            receiverListener);
-        chrome.cast.initialize(apiConfig, function(){ console.log('init success'); }, function(){ console.log('init error'); }) ;
-    }else{
-        console.log(errorInfo);
-    }
-};
+componentDidMount: function(){
+    window.__onGCastApiAvailable = function(loaded, errorInfo){
+        if(loaded){
+            var sessionRequest = new chrome.cast.SessionRequest(chrome.cast.media.DEFAULT_MEDIA_RECEIVER_APP_ID);
+            var apiConfig = new chrome.cast.ApiConfig(sessionRequest,
+                this.sessionListener,
+                this.receiverListener);
+            chrome.cast.initialize(apiConfig, function(){ console.log('init success'); }, function(){ console.log('init error'); }) ;
+        }else{
+            console.log(errorInfo);
+        }
+    }.bind(this);
+},
+
+sessionListener: function(e) {
+},
+
+receiverListener: function(){
+},
 
 if( e === chrome.cast.ReceiverAvailability.AVAILABLE) {
   }
 
 chrome.cast.requestSession(function(e){this.setState({session: e});}.bind(this), function(){ console.log('cast error');});
+
+play: function(){
+    if(this.state.session && this.state.session.status == chrome.cast.SessionStatus.CONNECTED){
+        if(this.state.currentMedia){
+            this.state.currentMedia.play(null,null,logError);
+        }else{
+            this.loadMedia();
+        }
+    }else{
+        this.refs.video.getDOMNode().play();
+    }        
+},
+
+pause: function(){
+
+},
 
 var mediaInfo = new chrome.cast.media.MediaInfo(currentMediaURL);
 var request = new chrome.cast.media.LoadRequest(mediaInfo);
@@ -25,38 +49,25 @@ session.loadMedia(request,
 
 function onMediaDiscovered(how, media) {
    currentMedia = media;
+   media.addUpdateListener(this.onMediaStatusUpdate);
 }
 
- $.ajax({
-        type: "HEAD",
-        async: true,
-        url: imageTemp[i],
-        success: function(message,text,response){
-            imageData.push([imageTemp[i], response.getResponseHeader('Content-Length')]);
-        }
-    });
-
-bit.ly/1F7o1XK
-
-https://dl.dropboxusercontent.com/u/6457942/comunicado%20colores/colores_lanzamiento.jpg
-
-function onMediaDiscovered(how, media) {
-  media.addUpdateListener(onMediaStatusUpdate);
-}
 
 onMediaStatusUpdate: function(status){
-        if(!status){
-             this.setState({currentMedia: undefined});
-             this.refs.play.getDOMNode().innerText = 'Play';
-             this.setState({paused: true});
-        }
-    },
-function sessionListener(e) {
-  session = e;
-  if (session.media.length != 0) {
-    onMediaDiscovered('onRequestSessionSuccess', session.media[0]);
+    if(!status){
+         this.setState({currentMedia: undefined});
+         this.refs.play.getDOMNode().innerText = 'Play';
+         this.setState({paused: true});
+    }
+},
+
+sessionListener: function(e) {
+  this.setState({session: e});
+  if (e.media.length != 0) {
+    this.setState({currentMedia: e.media[0]});
   }
-}
+},
+
 
 function stopApp() {
   session.stop(onSuccess, onError);
@@ -116,3 +127,15 @@ document.addEventListener('deviceready', onDeviceReady, false);
 if (!chrome.cast || !chrome.cast.isAvailable) {
   setTimeout(initializeCastApi, 1000);
 }
+
+=========================
+
+
+$.ajax({
+       type: "HEAD",
+       async: true,
+       url: imageTemp[i],
+       success: function(message,text,response){
+           imageData.push([imageTemp[i], response.getResponseHeader('Content-Length')]);
+       }
+   });
