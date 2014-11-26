@@ -6,7 +6,7 @@ var React = require('react');
 var Video = React.createClass({
     getInitialState: function(){
         return {
-            videoSrc: 'https://7f701fbe7bb1e868fd679092cca6699a2d6e1210.googledrive.com/host/0B2j1eTLysQsUWEc0clREdFFXMkE/colores_es.mp4',
+            videoSrc: 'http://localhost/~dvilchez/game/colores_es.mp4',
         };
     },
     
@@ -44,7 +44,7 @@ var Video = React.createClass({
          });
     },
 
-    play: function(){
+    switcPlayback: function(){
         var play = this.refs.play.getDOMNode();
         var video = this.refs.video.getDOMNode();
 
@@ -78,7 +78,7 @@ var Video = React.createClass({
                 </video>
                 <div className="player-tools">
                     <div className="player-row">
-                        <button ref='play' type="button" className="btn btn-default" onClick={this.play}>Play</button>
+                        <button ref='play' type="button" className="btn btn-default" onClick={this.switcPlayback}>Play</button>
                         <input ref='seekBar' type="range" min='0' max='100'/>
                     </div>
                     <div className="player-row">
